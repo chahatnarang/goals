@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Alert } from "react-native";
+import { View, StyleSheet, Alert } from "react-native";
 
 import NumberContainer from "../components/game/NumberContainer";
 import PrimaryButton from "../components/ui/PrimaryButton";
 import Title from "../components/ui/Title";
+import Card from "../components/ui/Card";
+import InstructionText from "../components/ui/InstructionText";
+import InlineButtons from "../components/ui/InlineButtons";
 
 function generateRandomBetween(min, max, exclude) {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -54,21 +57,27 @@ function GameScreen({ userNumber, onGameOver }) {
     setCurrentGuess(newRndNumber);
   }
 
+  const buttonData = [
+    {
+      name: "-",
+      onPress: nextGuessHandler.bind(this, "lower"),
+    },
+    {
+      name: "+",
+      onPress: nextGuessHandler.bind(this, "greater"),
+    },
+  ];
+
   return (
     <View style={styles.screen}>
       <Title>Opponent's Guess</Title>
       <NumberContainer>{currentGuess}</NumberContainer>
-      <View>
-        <Text>Higher or lower?</Text>
-        <View>
-          <PrimaryButton onPress={nextGuessHandler.bind(this, "lower")}>
-            -
-          </PrimaryButton>
-          <PrimaryButton onPress={nextGuessHandler.bind(this, "greater")}>
-            +
-          </PrimaryButton>
-        </View>
-      </View>
+      <Card>
+        <InstructionText style={styles.instrcutionText}>
+          Higher or lower?
+        </InstructionText>
+        <InlineButtons buttonData={buttonData} />
+      </Card>
       {/* <View>LOG ROUNDS</View> */}
     </View>
   );
@@ -80,5 +89,8 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     padding: 24,
+  },
+  instrcutionText: {
+    marginBottom: 12,
   },
 });
