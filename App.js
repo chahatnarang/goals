@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { StyleSheet, ImageBackground, SafeAreaView } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 
 import StartGameScreen from "./screens/StartGameScreen";
 import GameScreen from "./screens/GameScreen";
@@ -12,36 +12,41 @@ export default function App() {
   const [userNumber, setUserNumber] = useState();
   const [gameIsOver, setGameIsOver] = useState(true);
 
-  function pickerNumberHandler(pickerNumber) {
-    setUserNumber(pickerNumber);
+  function pickedNumberHandler(pickedNumber) {
+    setUserNumber(pickedNumber);
     setGameIsOver(false);
   }
 
-  function gameIsOverHandler() {
+  function gameOverHandler() {
     setGameIsOver(true);
   }
 
-  let screen = <StartGameScreen onPickNumber={pickerNumberHandler} />
+  let screen = <StartGameScreen onPickNumber={pickedNumberHandler} />;
 
   if (userNumber) {
-    screen = <GameScreen userNumber={userNumber} onGameOver={gameIsOverHandler} />
+    screen = (
+      <GameScreen userNumber={userNumber} onGameOver={gameOverHandler} />
+    );
   }
 
   if (gameIsOver && userNumber) {
-    screen = <GameOverScreen />
+    screen = <GameOverScreen />;
   }
 
   return (
-    <LinearGradient colors={[Colors.primary700, Colors.accent500]} style={styles.root}>
+    <LinearGradient
+      colors={[Colors.primary700, Colors.accent500]}
+      style={styles.rootScreen}
+    >
       <ImageBackground
         source={require("./assets/images/background.png")}
         resizeMode="cover"
-        style={styles.root}
+        style={styles.rootScreen}
         imageStyle={styles.backgroundImage}
       >
-        <SafeAreaView style={styles.root}>
-          <StatusBar style="light" />
-          {screen}
+        <SafeAreaView style={styles.rootScreen}>
+        <StatusBar style="light" />
+        {screen}
         </SafeAreaView>
       </ImageBackground>
     </LinearGradient>
@@ -49,10 +54,10 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  root: {
+  rootScreen: {
     flex: 1,
   },
-  backgroundImage:{
+  backgroundImage: {
     opacity: 0.15,
   },
 });
